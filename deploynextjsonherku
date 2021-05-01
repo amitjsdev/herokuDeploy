@@ -1,0 +1,44 @@
+
+Deploy next js app on heroku required install heroku  
+
+brew tap heroku/brew && brew install heroku
+npm install -g heroku
+heroku --version
+heroku login
+heroku login -i
+
+
+create build in next js :
+
+First Step : Add scripts in package.json
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build && next export",
+    "start": "next start",
+    "build:prod": "next prod-build"
+  },
+
+Second Step: run command: 
+npm run build  
+
+Third Step: Copy out folder(build folder)  from next js app 
+And paste in node js app for deploy 
+
+const express = require('express')
+const path = require('path');
+
+const app = express()
+const port = process.env.PORT || 3000 // Heroku will need the PORT environment variable
+
+app.use(express.static(path.join(__dirname, 'build/out')));
+
+app.listen(port, () => console.log(`App is live on port ${port}!`))
+
+Fourth Step:
+git init
+git add .
+git commit -m "Initial commit"
+heroku login
+heroku create nextapp
+git push heroku master
+
